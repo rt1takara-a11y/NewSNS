@@ -1,0 +1,32 @@
+# 秘密情報（絶対にコミットしない）
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+
+# 依存関係
+node_modules/
+.pnpm-store/
+vendor/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# ビルド生成物
+dist/
+build/
+out/
+.next/
+.turbo/
+coverage/
+
+# OS / エディタ
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+.vscode/
+*.swp
