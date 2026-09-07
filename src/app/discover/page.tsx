@@ -1,0 +1,59 @@
+"use client";
+
+import { useStore } from "@/lib/store";
+import { periodLabel } from "@/lib/period";
+
+export default function DiscoverPage() {
+  const { state, toggleFollow, discoverPeople } = useStore();
+
+  return (
+    <>
+      <header className="topbar">
+        <h1>さがす</h1>
+        <div className="period">{periodLabel(state.period)}に参加している人たち</div>
+      </header>
+
+      <div className="content">
+        <div className="notice">
+          先月フォローしていた人は、もう探せません。公開IDは毎月変わり、前月の人はたどれない仕組みです。
+          今月の出会いは、今月だけ。
+        </div>
+
+        {state.people.length === 0 ? (
+          <div className="empty">
+            <div className="big">🔍</div>
+            <p>まだ誰も見つけていません。</p>
+            <p>
+              <button className="btn" onClick={discoverPeople}>
+                今月の人をさがす
+              </button>
+            </p>
+          </div>
+        ) : (
+          state.people.map((p) => {
+            const following = state.following.includes(p.publicId);
+            return (
+              <div className="card" key={p.publicId}>
+                <div className="post-head">
+                  <div className="avatar">{p.icon}</div>
+                  <div>
+                    <div className="name">{p.displayName}</div>
+                    <div className="handle">@{p.publicId}</div>
+                  </div>
+                  <button
+                    className={following ? "btn ghost small" : "btn small"}
+                    style={{ marginLeft: "auto" }}
+                    onClick={() => toggleFollow(p.publicId)}
+                  >
+                    {following ? "フォロー中" : "フォロー"}
+                  </button>
+                </div>
+                {p.bio && <p className="post-body" style={{ marginBottom: 0 }}>{p.bio}</p>}
+              </div>
+            );
+          })
+        )}
+      </div>
+    </>
+  );
+}
