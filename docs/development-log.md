@@ -139,3 +139,13 @@
 
 ### 引き継ぎメモ
 -
+
+
+## 2026-09-08 — Codex（Supabase実環境作成）
+
+- ユーザー指定の rt1takara-a11y's Org に RE:ME を作成。東京 ap-northeast-1、作成時の月額見積もり0。プロジェクトID: jcvfwpnerxubmtfxgehs。
+- 初期migration reme_initialを実環境へ適用済み。9テーブルでRLS有効、authenticatedからprivateスキーマへのアクセス不可、anonからRPC実行不可を確認。
+- 実DBで一時的なテストユーザーを使い、プロフィール設定・投稿RPCを実行しpost_saved=trueを確認。トランザクションをrollbackしテストデータは残していない。実メール認証のテストではない。
+- Security advisor: privateのポリシー無し9件は直接アクセス禁止の設計によるINFO。認証済みユーザー向けSECURITY DEFINER RPC2件はWARN。認証・所有権検査、空search_path、公開フィールド制限を確認した上で意図的に維持。参照: https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable および https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy
+- 次: Authの確認コードメールテンプレート、SMTP、フロントの環境設定と再ビルド・デプロイ、実メール/別端末テスト、定期削除ジョブ。現在のSitesプレビューは引き続きデモ。
+- Supabase連携にはAuth/SMTP設定変更機能がないため、メール設定は所有者のダッシュボード操作が必要。APIキーはログ/Gitに保存していない。
