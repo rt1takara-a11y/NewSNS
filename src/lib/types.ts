@@ -27,9 +27,14 @@ export type Post = {
 };
 
 export type AppState = {
+  serverNow?: number;
+  nextResetAt?: number;
+  epoch?: string; // DB-owned month + reset generation
+  blocked?: Profile[];
   period: string; // 今月（例: "2026-09"）
   me: Profile; // ログイン中の利用者の「今月の姿」
   people: Profile[]; // 今月存在する他の利用者たち
   posts: Post[];
   following: string[]; // me がフォローしている publicId の一覧
 };
+

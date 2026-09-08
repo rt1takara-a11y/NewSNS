@@ -1,16 +1,17 @@
 "use client";
 
 import { Icon } from "./Icon";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useStore } from "@/lib/store";
 
 export function PostComposer() {
-  const { state, createPost } = useStore();
+  const { state, createPost, busy } = useStore();
   const [text, setText] = useState("");
 
-  const onPost = () => {
-    createPost(text);
-    setText("");
+  const operation = useRef<string | null>(null);
+  const onPost = async () => {
+    operation.current ??= crypto.randomUUID();
+    if (await createPost(text, operation.current)) { setText(""); operation.current = null; }
   };
 
   const noName = !state.me.displayName.trim();
@@ -29,17 +30,20 @@ export function PostComposer() {
               : "いま、何を感じてる？"
           }
           value={text}
-          onChange={(e) => setText(e.target.value)}
+          maxLength={500}
+          disabled={busy}
+          onChange={(e) => {setText(e.target.value); operation.current = null;}}
         />
       </div>
       <div className="row" style={{ justifyContent: "flex-end", marginTop: 8 }}>
         <span className="muted" style={{ fontSize: 13, marginRight: "auto" }}>
           月末にすべて消えます
         </span>
-        <button className="btn" onClick={onPost} disabled={!text.trim()}>
+        <button className="btn" onClick={onPost} disabled={busy || noName || !text.trim()}>
           投稿する <Icon name="arrow" />
         </button>
       </div>
     </div>
   );
 }
+

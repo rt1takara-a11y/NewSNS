@@ -1,13 +1,13 @@
 "use client";
 
 import { Icon } from "./Icon";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import type { Post } from "@/lib/types";
 import { useStore, useProfileLookup } from "@/lib/store";
 import { timeAgo } from "@/lib/format";
 
 export function PostCard({ post }: { post: Post }) {
-  const { state, toggleLike, addReply } = useStore();
+  const { state, toggleLike, addReply, busy, blockPerson, reportPost, deletePost } = useStore();
   const lookup = useProfileLookup();
   const [showReply, setShowReply] = useState(false);
   const [replyText, setReplyText] = useState("");
@@ -15,10 +15,13 @@ export function PostCard({ post }: { post: Post }) {
   const author = lookup(post.authorPublicId);
   const liked = post.likedBy.includes(state.me.publicId);
 
-  const onReply = () => {
-    addReply(post.id, replyText);
-    setReplyText("");
-    setShowReply(false);
+  const operation = useRef<string | null>(null);
+  const [reporting, setReporting] = useState(false);
+  const [reason, setReason] = useState("");
+  const [reported, setReported] = useState(false);
+  const onReply = async () => {
+    operation.current ??= crypto.randomUUID();
+    if (await addReply(post.id, replyText, operation.current)) { setReplyText(""); setShowReply(false); operation.current = null; }
   };
 
   return (
@@ -38,6 +41,7 @@ export function PostCard({ post }: { post: Post }) {
         <button
           className={liked ? "action liked" : "action"}
           onClick={() => toggleLike(post.id)}
+          disabled={busy}
           aria-pressed={liked}
           aria-label={liked ? "いいねを取り消す" : "いいね"}
         >
@@ -76,13 +80,23 @@ export function PostCard({ post }: { post: Post }) {
             rows={2}
             placeholder="今月のこの人に返信…"
             value={replyText}
-            onChange={(e) => setReplyText(e.target.value)}
+            maxLength={500}
+            disabled={busy}
+            onChange={(e) => {setReplyText(e.target.value); operation.current = null;}}
           />
-          <button className="btn small" onClick={onReply} disabled={!replyText.trim()}>
+          <button className="btn small" onClick={onReply} disabled={busy || !state.me.displayName.trim() || !replyText.trim()}>
             返信
           </button>
         </div>
       )}
+      <details className="post-options"><summary>投稿の操作</summary><div className="row">
+        {post.authorPublicId === state.me.publicId
+          ? <button className="action" disabled={busy} onClick={() => {if(window.confirm("この投稿を非表示にしますか？")) void deletePost(post.id);}}>自分の投稿を非表示</button>
+          : <><button className="action" onClick={() => setReporting(v => !v)}>通報する</button><button className="action" disabled={busy} onClick={() => {if(window.confirm("この人を今月ブロックしますか？互いの投稿が表示されなくなります。")) void blockPerson(post.authorPublicId, true);}}>ブロック</button></>}
+      </div></details>
+      {reporting && <form className="report-form" onSubmit={async e => {e.preventDefault();if(await reportPost(post.id, reason)){setReported(true);setReporting(false);setReason("");}}}><label>通報の理由<textarea required maxLength={500} value={reason} onChange={e => setReason(e.target.value)} /></label><button className="btn small" disabled={busy || !reason.trim()}>通報を送信</button></form>}
+      {reported && <p role="status" className="muted">通報を受け付けました。</p>}
     </article>
   );
 }
+
