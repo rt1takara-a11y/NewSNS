@@ -5,8 +5,8 @@ import { MonthPanel } from "@/components/MonthPanel";
 import { TabBar } from "@/components/TabBar";
 
 export const metadata: Metadata = {
-  title: "RE:ME（試作品）",
-  description: "RE:ME（リミー）。毎月、あたらしい自分に。毎月リセットされるSNSの試作品。",
+  title: "RE:ME（リミー）",
+  description: "RE:ME（リミー）。毎月、あたらしい自分に。毎月リセットされるSNS。",
 };
 
 export const viewport = {
