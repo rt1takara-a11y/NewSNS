@@ -9,7 +9,8 @@ export default function DiscoverPage() {
   return (
     <>
       <header className="topbar">
-        <h1>さがす</h1>
+        <div className="eyebrow">NEW CONNECTIONS</div>
+        <h1>今月の出会い</h1>
         <div className="period">{periodLabel(state.period)}に参加している人たち</div>
       </header>
 
@@ -38,11 +39,12 @@ export default function DiscoverPage() {
                   <div className="avatar">{p.icon}</div>
                   <div>
                     <div className="name">{p.displayName}</div>
-                    <div className="handle">@{p.publicId}</div>
+                    <div className="handle">今月のメンバー</div>
                   </div>
                   <button
                     className={following ? "btn ghost small" : "btn small"}
                     style={{ marginLeft: "auto" }}
+                    aria-pressed={following}
                     onClick={() => toggleFollow(p.publicId)}
                   >
                     {following ? "フォロー中" : "フォロー"}

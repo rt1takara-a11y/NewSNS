@@ -27,21 +27,22 @@ export default function ProfilePage() {
   return (
     <>
       <header className="topbar">
-        <h1>プロフィール</h1>
+        <div className="eyebrow">YOUR MONTHLY SELF</div>
+        <h1>今月のあなた</h1>
         <div className="period">{periodLabel(state.period)}のあなた ・ 来月には消えます</div>
       </header>
 
       <div className="content">
-        <div className="card center">
+        <div className="card center profile-cover">
           <div className="avatar lg" style={{ margin: "0 auto 8px" }}>{icon}</div>
           <div className="name" style={{ fontSize: 18 }}>{name || "（名前未設定）"}</div>
-          <div className="handle">@{state.me.publicId}（今月の公開ID）</div>
+          <div className="handle">{periodLabel(state.period)}だけのプロフィール</div>
         </div>
 
         <div className="card">
           <div className="field">
-            <label>今月の名前</label>
-            <input value={name} onChange={(e) => setName(e.target.value)} placeholder="例：名無しの9月" />
+            <label htmlFor="profile-name">今月の名前</label>
+            <input id="profile-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="例：名無しの9月" />
           </div>
 
           <div className="field">
@@ -53,6 +54,7 @@ export default function ProfilePage() {
                   className={ic === icon ? "sel" : ""}
                   onClick={() => setIcon(ic)}
                   aria-label={ic}
+                  aria-pressed={ic === icon}
                 >
                   {ic}
                 </button>
@@ -61,12 +63,12 @@ export default function ProfilePage() {
           </div>
 
           <div className="field">
-            <label>ひとこと</label>
-            <textarea rows={2} value={bio} onChange={(e) => setBio(e.target.value)} placeholder="今月の自分について" />
+            <label htmlFor="profile-bio">ひとこと</label>
+            <textarea id="profile-bio" rows={2} value={bio} onChange={(e) => setBio(e.target.value)} placeholder="今月の自分について" />
           </div>
 
           <div className="row" style={{ justifyContent: "flex-end" }}>
-            {saved && <span className="muted" style={{ marginRight: "auto" }}>保存しました</span>}
+            {saved && <span role="status" className="muted" style={{ marginRight: "auto" }}>保存しました</span>}
             <button className="btn" onClick={onSave}>保存</button>
           </div>
         </div>

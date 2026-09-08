@@ -20,7 +20,8 @@ export default function RestartPage() {
   return (
     <>
       <header className="topbar">
-        <h1>再スタート</h1>
+        <div className="eyebrow">A FRESH START</div>
+        <h1>また、まっさらから。</h1>
         <div className="period">{periodLabel(state.period)} ・ 月初のあなた</div>
       </header>
 
@@ -49,7 +50,7 @@ export default function RestartPage() {
                 名前も、つながりも、まっさらです。
               </p>
               <div className="handle" style={{ marginTop: 8 }}>
-                今月の新しい公開ID：@{state.me.publicId}
+                今月の新しいプロフィールが用意されました。
               </div>
             </div>
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { Icon } from "./Icon";
 import { useState } from "react";
 import type { Post } from "@/lib/types";
 import { useStore, useProfileLookup } from "@/lib/store";
@@ -21,12 +22,12 @@ export function PostCard({ post }: { post: Post }) {
   };
 
   return (
-    <article className="card">
+    <article className="card post-card">
       <div className="post-head">
         <div className="avatar">{author?.icon ?? "👤"}</div>
         <div>
           <div className="name">{author?.displayName || "（名前未設定）"}</div>
-          <div className="handle">@{post.authorPublicId}</div>
+          <div className="handle">今月のつながり</div>
         </div>
         <div className="time">{timeAgo(post.createdAt)}</div>
       </div>
@@ -38,11 +39,12 @@ export function PostCard({ post }: { post: Post }) {
           className={liked ? "action liked" : "action"}
           onClick={() => toggleLike(post.id)}
           aria-pressed={liked}
+          aria-label={liked ? "いいねを取り消す" : "いいね"}
         >
-          {liked ? "♥" : "♡"} {post.likedBy.length > 0 ? post.likedBy.length : ""}
+          <Icon name="heart" /> {post.likedBy.length > 0 ? post.likedBy.length : ""}
         </button>
-        <button className="action" onClick={() => setShowReply((v) => !v)}>
-          💬 {post.replies.length > 0 ? post.replies.length : "返信"}
+        <button className="action" aria-expanded={showReply} aria-label="返信する" onClick={() => setShowReply((v) => !v)}>
+          <Icon name="reply" /> {post.replies.length > 0 ? post.replies.length : "返信"}
         </button>
       </div>
 
@@ -70,6 +72,7 @@ export function PostCard({ post }: { post: Post }) {
         <div className="row" style={{ marginTop: 10, alignItems: "flex-end" }}>
           <textarea
             className="grow"
+            aria-label="返信内容"
             rows={2}
             placeholder="今月のこの人に返信…"
             value={replyText}
