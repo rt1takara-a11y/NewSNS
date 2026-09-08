@@ -149,3 +149,10 @@
 - Security advisor: privateのポリシー無し9件は直接アクセス禁止の設計によるINFO。認証済みユーザー向けSECURITY DEFINER RPC2件はWARN。認証・所有権検査、空search_path、公開フィールド制限を確認した上で意図的に維持。参照: https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable および https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy
 - 次: Authの確認コードメールテンプレート、SMTP、フロントの環境設定と再ビルド・デプロイ、実メール/別端末テスト、定期削除ジョブ。現在のSitesプレビューは引き続きデモ。
 - Supabase連携にはAuth/SMTP設定変更機能がないため、メール設定は所有者のダッシュボード操作が必要。APIキーはログ/Gitに保存していない。
+
+
+## 2026-09-09 — Codex（実DB接続版の公開準備）
+- ユーザーからSMTPおよび確認コードメールテンプレートの保存完了報告を受領。実配信は未検証。
+- RE:MEプロジェクトの公開URLとpublishable keyをGit対象外の.env.localに設定。静的ビルドに反映する。秘密キーは使用していない。
+- 既存の本人限定Sitesに実DB接続版を反映する作業を開始。閲覧範囲は変更しない。
+- 次は所有者自身による確認コード受信・ログイン・投稿・再読み込み試験。メール設定の実配信、別端末の認証、定期削除ジョブは未検証/未設定。
