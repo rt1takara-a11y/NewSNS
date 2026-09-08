@@ -5,8 +5,8 @@ import { MonthPanel } from "@/components/MonthPanel";
 import { TabBar } from "@/components/TabBar";
 
 export const metadata: Metadata = {
-  title: "NewSNS（試作品）",
-  description: "毎月すべてがリセットされるSNS。試作品。",
+  title: "RE:ME（試作品）",
+  description: "RE:ME（リミー）。毎月、あたらしい自分に。毎月リセットされるSNSの試作品。",
 };
 
 export const viewport = {
@@ -30,3 +30,4 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
+
