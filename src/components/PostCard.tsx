@@ -1,6 +1,7 @@
 "use client";
 
 import { Icon } from "./Icon";
+import { ProfileLink } from "./ProfileLink";
 import { useState, useRef } from "react";
 import type { Post } from "@/lib/types";
 import { useStore, useProfileLookup } from "@/lib/store";
@@ -27,9 +28,9 @@ export function PostCard({ post }: { post: Post }) {
   return (
     <article className="card post-card">
       <div className="post-head">
-        <div className="avatar">{author?.icon ?? "👤"}</div>
+        <ProfileLink profile={author} icon />
         <div>
-          <div className="name">{author?.displayName || "（名前未設定）"}</div>
+          <ProfileLink profile={author} />
           <div className="handle">今月のつながり</div>
         </div>
         <div className="time">{timeAgo(post.createdAt)}</div>
@@ -58,10 +59,10 @@ export function PostCard({ post }: { post: Post }) {
             const ra = lookup(r.authorPublicId);
             return (
               <div className="reply" key={r.id}>
-                <div className="avatar">{ra?.icon ?? "👤"}</div>
+                <ProfileLink profile={ra} icon />
                 <div>
                   <div className="name" style={{ fontSize: 13 }}>
-                    {ra?.displayName || "（名前未設定）"}{" "}
+                    <ProfileLink profile={ra} />{" "}
                     <span className="handle">・{timeAgo(r.createdAt)}</span>
                   </div>
                   <div>{r.body}</div>
@@ -99,4 +100,3 @@ export function PostCard({ post }: { post: Post }) {
     </article>
   );
 }
-

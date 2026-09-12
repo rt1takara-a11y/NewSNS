@@ -35,6 +35,13 @@ button, a, textarea, input { transition: background-color .18s, border-color .18
 .post-card:nth-of-type(3n + 1) .avatar { background: #2c353b; }
 .avatar.lg { width: 84px; height: 84px; border-radius: 26px; font-size: 40px; }
 .name { font-weight: 650; font-size: 15px; overflow-wrap: anywhere; }
+.profile-link:hover { color: var(--accent); }
+.name.profile-link:hover { text-decoration: underline; text-underline-offset: 4px; }
+.name.profile-link { display: inline-block; max-width: 100%; }
+.profile-avatar { margin: 0 auto 12px; }
+.profile-name { font-size: 22px; overflow-wrap: anywhere; margin: 0; }
+.profile-posts-heading { font-size: 16px; margin: 22px 4px 10px; }
+.profile-posts-note { font-size: 14px; }
 .handle, .time { font-size: 12px; color: var(--muted); overflow-wrap: anywhere; }
 .time { margin-left: auto; flex-shrink: 0; align-self: flex-start; padding-top: 3px; }
 .post-body { margin: 16px 0 10px; white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.85; }
