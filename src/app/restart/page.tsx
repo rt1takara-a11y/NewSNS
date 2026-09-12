@@ -6,7 +6,7 @@ import { useStore } from "@/lib/store";
 import { periodLabel } from "@/lib/period";
 
 export default function RestartPage() {
-  const { state, monthlyReset } = useStore();
+  const { state, monthlyReset, live } = useStore();
   const [done, setDone] = useState(false);
 
   const onReset = () => {
@@ -20,12 +20,13 @@ export default function RestartPage() {
   return (
     <>
       <header className="topbar">
-        <h1>再スタート</h1>
+        <div className="eyebrow">A FRESH START</div>
+        <h1>また、まっさらから。</h1>
         <div className="period">{periodLabel(state.period)} ・ 月初のあなた</div>
       </header>
 
       <div className="content">
-        {!done && !empty ? (
+        {live && !empty ? <div className="card"><h2>次の月は、まっさらから。</h2><p>日本時間の毎月1日 0:00に、名前・投稿・フォロー・いいね・返信がリセットされます。</p><p className="muted">ログイン用アカウントは継続します。来月の自分に会うのを、楽しみに。</p><Link className="btn" href="/">今月のタイムラインへ</Link></div> : !done && !empty ? (
           <>
             <div className="notice">
               月が変わると、名前・投稿・フォロー・いいね・返信・公開IDが<strong>すべて消えます</strong>。
@@ -49,7 +50,7 @@ export default function RestartPage() {
                 名前も、つながりも、まっさらです。
               </p>
               <div className="handle" style={{ marginTop: 8 }}>
-                今月の新しい公開ID：@{state.me.publicId}
+                今月の新しいプロフィールが用意されました。
               </div>
             </div>
 
@@ -84,3 +85,4 @@ export default function RestartPage() {
     </>
   );
 }
+

@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Providers } from "./providers";
+import { MonthPanel } from "@/components/MonthPanel";
 import { TabBar } from "@/components/TabBar";
 
 export const metadata: Metadata = {
-  title: "NewSNS（試作品）",
-  description: "毎月すべてがリセットされるSNS。試作品。",
+  title: "RE:ME（リミー）",
+  description: "RE:ME（リミー）。毎月、あたらしい自分に。毎月リセットされるSNS。",
 };
 
 export const viewport = {
@@ -19,11 +20,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <Providers>
           <div className="app">
-            {children}
+            <a className="skip-link" href="#main-content">本文へスキップ</a>
             <TabBar />
+            <main id="main-content" className="main-column">{children}</main>
+            <MonthPanel />
           </div>
         </Providers>
       </body>
     </html>
   );
 }
+

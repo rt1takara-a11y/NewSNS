@@ -22,16 +22,18 @@ export default function TimelinePage() {
   return (
     <>
       <header className="topbar">
-        <h1>タイムライン</h1>
+        <div className="eyebrow">THE PRESENT</div>
+        <h1>タイムライン<span className="header-mark">↗</span></h1>
         <div className="period">{periodLabel(state.period)}の世界 ・ 月末にすべて消えます</div>
       </header>
 
       <div className="content">
         <div className="tabs">
-          <button className={tab === "latest" ? "tab active" : "tab"} onClick={() => setTab("latest")}>
+          <button aria-pressed={tab === "latest"} className={tab === "latest" ? "tab active" : "tab"} onClick={() => setTab("latest")}>
             新着
           </button>
           <button
+            aria-pressed={tab === "following"}
             className={tab === "following" ? "tab active" : "tab"}
             onClick={() => setTab("following")}
           >
