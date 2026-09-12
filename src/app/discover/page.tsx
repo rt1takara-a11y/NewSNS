@@ -2,6 +2,7 @@
 
 import { useStore } from "@/lib/store";
 import { periodLabel } from "@/lib/period";
+import { ProfileLink } from "@/components/ProfileLink";
 
 export default function DiscoverPage() {
   const { state, toggleFollow, discoverPeople, busy, live } = useStore();
@@ -36,9 +37,9 @@ export default function DiscoverPage() {
             return (
               <div className="card" key={p.publicId}>
                 <div className="post-head">
-                  <div className="avatar">{p.icon}</div>
+                  <ProfileLink profile={p} icon />
                   <div>
-                    <div className="name">{p.displayName}</div>
+                    <ProfileLink profile={p} />
                     <div className="handle">今月のメンバー</div>
                   </div>
                   <button
@@ -60,4 +61,3 @@ export default function DiscoverPage() {
     </>
   );
 }
-

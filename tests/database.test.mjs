@@ -53,6 +53,18 @@ test('cannot delete another person’s post or create overlong content',async()=
  await assert.rejects(()=>mutate(B,'delete_post',{postId},b.epoch),/FORBIDDEN/);
  await assert.rejects(()=>mutate(B,'post',{id:uuid(),body:'x'.repeat(501)},b.epoch),/INVALID_INPUT/);
 });
+test('public profile snapshot includes only public fields and follow/unfollow persists',async()=>{
+ const s=await state(B);
+ const profile=s.people.find(p=>p.publicId===a.me.publicId);
+ assert.deepEqual(Object.keys(profile).sort(),['bio','displayName','icon','publicId']);
+ assert.equal(profile.bio,'hello');assert.equal(profile.icon,'🌱');assert.equal(profile.displayName,'A');
+ assert.equal(JSON.stringify(s).includes(A),false);assert.equal(JSON.stringify(s).includes(B),false);
+ assert.equal(JSON.stringify(s).includes('email'),false);
+ await mutate(B,'follow',{target:a.me.publicId,enabled:false},b.epoch);
+ assert.deepEqual((await state(B)).following,[]);
+ await mutate(B,'follow',{target:a.me.publicId,enabled:true},b.epoch);
+ assert.deepEqual((await state(B)).following,[a.me.publicId]);
+});
 test('report stores evidence privately and is idempotent',async()=>{
  await mutate(B,'report',{postId,reason:'test report'},b.epoch);await mutate(B,'report',{postId,reason:'test report'},b.epoch);
  const r=(await db.query('select * from reme_private.reports')).rows;assert.equal(r.length,1);assert.equal(r[0].subject_account,A);assert.equal(r[0].snapshot.body,'shared hello');
@@ -60,6 +72,7 @@ test('report stores evidence privately and is idempotent',async()=>{
 });
 test('blocking hides posts and relationships in both directions',async()=>{
  b=await mutate(B,'block',{target:a.me.publicId},b.epoch);assert.equal(b.posts.length,0);assert.equal(b.following.length,0);assert.equal(b.blocked.length,1);
+ assert.equal(b.people.some(p=>p.publicId===a.me.publicId),false);
  assert.equal((await state(A)).people.some(p=>p.publicId===b.me.publicId),false);
  await assert.rejects(()=>mutate(A,'follow',{target:b.me.publicId,enabled:true},a.epoch),/NOT_FOUND/);
  b=await mutate(B,'unblock',{target:a.me.publicId},b.epoch);assert.equal(b.posts.length,1);
@@ -67,6 +80,8 @@ test('blocking hides posts and relationships in both directions',async()=>{
 test('server-owned reset creates new public IDs and rejects stale requests',async()=>{
  const old=a.me.publicId;await db.exec('select reme_private.test_reset()');
  const fresh=await state(A);assert.notEqual(fresh.me.publicId,old);assert.equal(fresh.me.displayName,'');assert.equal(fresh.posts.length,0);assert.equal(fresh.following.length,0);
+ assert.equal(fresh.people.some(p=>p.publicId===b.me.publicId),false);
+ await assert.rejects(()=>mutate(A,'follow',{target:b.me.publicId,enabled:true},fresh.epoch),/NOT_FOUND/);
  await assert.rejects(()=>mutate(A,'post',{id:uuid(),body:'stale'},a.epoch),/PERIOD_CHANGED/);
  await assert.rejects(()=>mutate(A,'like',{postId,enabled:true},fresh.epoch),/NOT_FOUND/);
  a=fresh;
