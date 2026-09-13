@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useStore } from "@/lib/store";
 import { periodLabel } from "@/lib/period";
 import { PostCard } from "@/components/PostCard";
+import { ProfileConnections } from "@/components/ProfileConnections";
 
 const ICONS = ["🙂", "🌱", "🌙", "🐟", "☕️", "🎧", "🍋", "🪁", "🦊", "🌸", "⭐️", "🐧"];
 
@@ -37,6 +38,7 @@ export default function ProfilePage() {
           <div className="avatar lg" style={{ margin: "0 auto 8px" }}>{icon}</div>
           <div className="name" style={{ fontSize: 18 }}>{name || "（名前未設定）"}</div>
           <div className="handle">{periodLabel(state.period)}だけのプロフィール</div>
+          <ProfileConnections key={state.me.publicId} publicId={state.me.publicId} />
         </div>
 
         <div className="card">
@@ -87,4 +89,3 @@ export default function ProfilePage() {
     </>
   );
 }
-

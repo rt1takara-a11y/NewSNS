@@ -7,6 +7,7 @@ import { useStore } from "@/lib/store";
 import { findPublicProfile, publicProfilePosts } from "@/lib/publicProfile";
 import { periodLabel } from "@/lib/period";
 import { PostCard } from "@/components/PostCard";
+import { ProfileConnections } from "@/components/ProfileConnections";
 
 function LoadingProfile() {
   return <div className="content" role="status">今月のプロフィールを確認しています…</div>;
@@ -56,6 +57,7 @@ function PublicProfile() {
           <div className="avatar lg profile-avatar" aria-hidden="true">{profile.icon}</div>
           <h2 id="public-profile-name" className="profile-name">{profile.displayName || "（名前未設定）"}</h2>
           <p className="post-body">{profile.bio || "自己紹介はまだありません。"}</p>
+          <ProfileConnections key={profile.publicId} publicId={profile.publicId} />
           {ownProfile ? <Link className="btn ghost" href="/profile/">プロフィールを編集</Link> :
             <button className={following ? "btn ghost" : "btn"} disabled={busy}
               aria-pressed={following} onClick={() => void toggleFollow(profile.publicId)}>

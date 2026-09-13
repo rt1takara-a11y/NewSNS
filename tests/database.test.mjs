@@ -1,6 +1,6 @@
 import {test,after} from 'node:test';
 import assert from 'node:assert/strict';
-import {readFile,mkdtemp,rm} from 'node:fs/promises';
+import {readFile,readdir,mkdtemp,rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {PGlite} from '@electric-sql/pglite';
@@ -11,7 +11,10 @@ await db.exec(`create role anon; create role authenticated; grant usage on schem
 create schema auth; create table auth.users(id uuid primary key);
 create function auth.uid() returns uuid language sql as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;
 insert into auth.users values('${A}'),('${B}');`);
-await db.exec(await readFile(new URL('../supabase/migrations/202609080001_reme.sql',import.meta.url),'utf8'));
+const migrations = new URL('../supabase/migrations/', import.meta.url);
+for (const file of (await readdir(migrations)).filter(f => f.endsWith('.sql')).sort()) {
+ await db.exec(await readFile(new URL(file, migrations), 'utf8'));
+}
 async function as(user,sql,args=[]){
  await db.exec('reset role');await db.query("select set_config('request.jwt.claim.sub',$1,false)",[user??'']);
  await db.exec('set role '+(user?'authenticated':'anon'));
