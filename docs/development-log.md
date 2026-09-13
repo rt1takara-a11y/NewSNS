@@ -5,6 +5,13 @@
 
 ---
 
+## 2026-09-13 — Codex / 追加SQLの重複実行エラー確認
+
+- 所有者から `42P07: relation "follows_target_actor" already exists` の報告を受け、既存RE:MEプロジェクトのDBカタログを読み取り。
+- `follows_target_actor` が `reme_private.follows(target, actor)` のbtree索引として存在し、`public.reme_connections(uuid,text)` の本体が追加migrationと一致することを確認。anonの実行権限なし、authenticatedの実行権限あり。
+- 追加処理は既に反映済みで、再実行不要と案内。実DBへの変更やデータ削除は行っていない。コード変更なしのため、既存33件成功後の再テスト・再ビルドは不要。
+- 次はローカルRE:MEのプロフィール再読み込みと人数・一覧の実操作確認。認証ユーザーの代理操作やセッション取得は実施していない。
+
 ## 2026-09-13 — Codex / プロフィールのフォロー中・フォロワー一覧
 
 - 所有者がログイン成功を報告。続いて人数と一覧の追加を了承したため、統合済みコードから `codex/profile-connections` を作成。作業開始時に残っていた接続確認ログを保持した。
