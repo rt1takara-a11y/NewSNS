@@ -3,6 +3,14 @@
 作業内容と「次にやること」を残す。新しい記録を上に追記する。
 作業を始める前に必ず読み、作業を終えたら必ず書く。
 
+## 2026-09-14 — Codex / メール不要のログインID・パスワードをブランチ実装
+
+- `codex/sites-profile-release` の履歴を保持し、`codex/login-id-password` で登録・ログイン画面、復旧なしの同意、既存メール切替を追加。既存のセッション保存・公開プロフィール・投稿RPCを再利用。
+- CLI生成の `20260914033953_login_id_password.sql` にprivateな対応表、service_role限定RPC、試行制限を追加。Edge Functionに登録・パスワード照合・停止検査を実装。既存migrationや実環境設定は変更していない。
+- `npm test` 43件成功（従来33件＋権限・ID対応・レート・認証ハンドラー10件）。Deno check/lint成功。`NEXT_PUBLIC_LOGIN_ID_ENABLED=true npm run build` 成功。Nextの親ディレクトリlockfile警告、NodeのTSモジュール自動判別警告は非致命的。
+- [login-id-setup.md](login-id-setup.md) に反映手順と制限を記録。新規登録は既存メールアカウントとは別。パスワード変更・復旧・ID変更は未実装。
+- 実DB適用・Edge配置・本番Authとの疎通・新方式の実ブラウザ試験・マージ・デプロイは未実施。既定flag=falseで既存サイトの認証を維持。次は順序どおりバックエンドを反映し、専用アカウントで検証してからフロントを有効化する。
+
 ---
 
 ## 2026-09-14 — Codex / 公開サイトのログイン保持を実ブラウザで確認

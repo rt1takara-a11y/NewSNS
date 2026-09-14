@@ -1,0 +1,4 @@
+[functions.reme-password-auth]
+# This endpoint performs its own password authentication before returning a session.
+# A session JWT cannot be required before the user has registered / logged in.
+verify_jwt = false

@@ -7,7 +7,7 @@ import {PGlite} from '@electric-sql/pglite';
 const directory=await mkdtemp(join(tmpdir(),'reme-db-'));
 let db=new PGlite(directory);
 const A='00000000-0000-4000-8000-000000000001', B='00000000-0000-4000-8000-000000000002';
-await db.exec(`create role anon; create role authenticated; grant usage on schema public to anon, authenticated;
+await db.exec(`create role anon; create role authenticated; create role service_role; grant usage on schema public to anon, authenticated;
 create schema auth; create table auth.users(id uuid primary key);
 create function auth.uid() returns uuid language sql as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;
 insert into auth.users values('${A}'),('${B}');`);

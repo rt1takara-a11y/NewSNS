@@ -163,3 +163,8 @@ textarea:focus, input:focus { outline: 2px solid var(--accent-weak); border-colo
 .connection-person .avatar { flex-shrink: 0; }
 .connection-person-text { min-width: 0; overflow-wrap: anywhere; }
 .connection-bio { display: block; white-space: pre-wrap; margin-top: 4px; }
+.auth-methods { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0; }
+.auth-methods [aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+.auth-shell .auth-consent { display: flex; align-items: flex-start; gap: 10px; color: var(--text); }
+.auth-shell .auth-consent input { width: 20px; height: 20px; flex: 0 0 20px; margin-top: 4px; }
+.auth-shell form h2 { font-size: 20px; margin: 4px 0; }

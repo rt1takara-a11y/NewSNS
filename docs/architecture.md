@@ -2,7 +2,9 @@
 
 ## 2026-09-08 実装更新
 
-メールOTPと保存先はSupabase Auth + PostgreSQL、画面は既存Next.js static exportを採用。SitesのChatGPT認証は公開閲覧の制御であり、メール認証を代替しない。メール認証要件と既存Next.jsを保つため、D1への移行は行わない。
+認証・保存先はSupabase Auth + PostgreSQL、画面は既存Next.js static exportを採用。SitesのChatGPT認証は公開閲覧の制御であり、アプリの認証を代替しない。既存の構成を保ち、D1への移行は行わない。
+
+2026-09-14: メールOTPを維持したまま、非公開ログインIDとパスワードをEdge Function経由で追加。private対応表とservice_role限定RPCを使用し、パスワードの保存・照合はSupabase Authに委譲する。現在はブランチ実装のみ、既定flagは無効。設計・反映手順・制限は [login-id-setup.md](login-id-setup.md) を参照。
 
 実装: `supabase/migrations/202609080001_reme.sql`、`src/lib/supabase.ts`、`src/lib/store.tsx`。
 
