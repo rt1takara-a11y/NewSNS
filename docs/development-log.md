@@ -19,7 +19,8 @@
 - 実DBでprivateテーブルのRLS、anon/authenticatedのRPC実行不可、service_roleのみ実行可能を確認。Security advisorのprivateテーブルにポリシーなしは直接アクセス禁止の意図どおり。既存3業務RPCのsecurity definer警告もJWT・可視性検査を持つ意図済みの構成。
 - 専用の一時IDとランダムパスワードで実環境の新規登録・セッション発行・再ログインに成功。レスポンスがアクセストークンと更新トークンだけであることを確認後、Authユーザー・private対応行を削除し、残存0件を確認。秘密値は出力・保存していない。
 - Advisorは漏洩パスワード保護が無効と警告。アプリ側は15〜72文字を必須としているが、外部公開募集前にSupabase Authの漏洩パスワード保護を有効化することを推奨。
-- `.env.local` のIDログインflagを有効化。次はテスト・本番ビルド後、所有者限定のSitesへ反映し、公開URLで画面を確認する。
+- `.env.local` のIDログインflagを有効化。43件のテスト、Deno lint/check、Next本番ビルドに成功し、所有者1名限定のSitesへversion 5として反映。公開URLは従来どおり `https://newsns-ui-ryusei.rt1-takara.chatgpt.site`。
+- ビルド成果物に「IDでログイン」「メール不要で新規登録」が含まれることを確認。Sitesの閲覧範囲は変更していない。次は所有者が公開URLで登録画面の表示とログアウト後の再ログインを確認する。
 
 ## 2026-09-14 — Codex / 公開サイトのログイン保持を実ブラウザで確認
 
