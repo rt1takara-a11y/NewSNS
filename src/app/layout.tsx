@@ -6,7 +6,7 @@ import { TabBar } from "@/components/TabBar";
 
 export const metadata: Metadata = {
   title: "RE:ME（リミー）",
-  description: "RE:ME（リミー）。毎月、あたらしい自分に。毎月リセットされるSNS。",
+  description: "RE:ME（リミー）。毎週、あたらしい自分に。毎週リセットされるSNS。",
 };
 
 export const viewport = {
@@ -30,4 +30,3 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
-

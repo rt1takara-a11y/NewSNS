@@ -11,14 +11,14 @@ export default function DiscoverPage() {
     <>
       <header className="topbar">
         <div className="eyebrow">NEW CONNECTIONS</div>
-        <h1>今月の出会い</h1>
+        <h1>今週の出会い</h1>
         <div className="period">{periodLabel(state.period)}に参加している人たち</div>
       </header>
 
       <div className="content">
         <div className="notice">
-          先月フォローしていた人は、もう探せません。公開IDは毎月変わり、前月の人はたどれない仕組みです。
-          今月の出会いは、今月だけ。
+          先週フォローしていた人は、もう探せません。公開IDは毎週変わり、前週の人はたどれない仕組みです。
+          今週の出会いは、今週だけ。
         </div>
 
         {state.people.length === 0 ? (
@@ -27,7 +27,7 @@ export default function DiscoverPage() {
             <p>まだ表示できる人がいません。</p>
             <p>
               <button className="btn" disabled={busy} onClick={discoverPeople}>
-                {live ? "更新する" : "今月の人をさがす"}
+                {live ? "更新する" : "今週の人をさがす"}
               </button>
             </p>
           </div>
@@ -40,7 +40,7 @@ export default function DiscoverPage() {
                   <ProfileLink profile={p} icon />
                   <div>
                     <ProfileLink profile={p} />
-                    <div className="handle">今月のメンバー</div>
+                    <div className="handle">今週のメンバー</div>
                   </div>
                   <button
                     className={following ? "btn ghost small" : "btn small"}

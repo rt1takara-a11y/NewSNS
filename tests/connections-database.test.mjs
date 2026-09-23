@@ -86,7 +86,7 @@ test('suspended people disappear from counts, lists and target lookup', async ()
   await assert.rejects(() => read(users[0], b), /NOT_FOUND/);
   await db.query('update reme_private.accounts set suspended=false where id=$1', [users[1]]);
 });
-test('internal, unknown and previous-month IDs cannot be used as targets or list members', async () => {
+test('internal, unknown and previous-week IDs cannot be used as targets or list members', async () => {
   for (const id of [users[0], crypto.randomUUID(), null]) {
     await assert.rejects(() => read(users[0], id), /NOT_FOUND/);
   }
@@ -97,7 +97,7 @@ test('internal, unknown and previous-month IDs cannot be used as targets or list
   await assert.rejects(() => read(users[0], b), /NOT_FOUND/);
   await db.query('update reme_private.profiles set epoch=$1 where id=$2', [epoch, b]);
 });
-test('reset rejects stale epochs and old targets; new monthly profile has no edges', async () => {
+test('reset rejects stale epochs and old targets; new weekly profile has no edges', async () => {
   await db.exec('select reme_private.test_reset()');
   await assert.rejects(() => read(users[0], a), /PERIOD_CHANGED/);
   await assert.rejects(() => read(users[0], a, null), /PERIOD_CHANGED/);

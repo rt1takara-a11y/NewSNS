@@ -25,7 +25,7 @@ test('browser roles cannot resolve login IDs, access private tables or manipulat
  const rows=(await db.query("select relrowsecurity from pg_class where oid in ('reme_private.login_identities'::regclass,'reme_private.auth_attempts'::regclass)")).rows;
  assert.equal(rows.length,2);assert.ok(rows.every(r=>r.relrowsecurity));
 });
-test('private registry reserves a unique stable random alias, including across monthly reset',async()=>{
+test('private registry reserves a unique stable random alias, including across weekly reset',async()=>{
  assert.equal((await identity('user_name',false)).rows[0].value,null);
  const alias=(await identity('user_name',true)).rows[0].value;
  assert.match(alias,/^[a-f0-9-]{36}@login\.reme\.invalid$/);

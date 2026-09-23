@@ -33,7 +33,7 @@ export function ProfileConnections({ publicId }: { publicId: string }) {
     return () => { active = false; };
   }, [state, live, publicId, attempt, error]);
 
-  // Hide previous responses immediately on identity, month, follow or block changes.
+  // Hide previous responses immediately on identity, week, follow or block changes.
   const data = live ? (!error ? currentConnections(state, publicId, result) : undefined) : demoConnections(state, publicId);
   const failed = live && (!!error || (result?.snapshot === state && !result.data));
   const open = (nextTab: typeof tab) => {
@@ -58,7 +58,7 @@ export function ProfileConnections({ publicId }: { publicId: string }) {
     {!data && <>{status}{retry}</>}
     <dialog className="connections-dialog" ref={dialog} aria-labelledby={titleId}>
       <div className="row connections-heading">
-        <h2 id={titleId}>{tab === 'following' ? '今月のフォロー中' : '今月のフォロワー'}</h2>
+        <h2 id={titleId}>{tab === 'following' ? '今週のフォロー中' : '今週のフォロワー'}</h2>
         <button className="btn ghost small" autoFocus onClick={() => dialog.current?.close()}>閉じる</button>
       </div>
       {!data ? <>{status}{retry}</> : data[tab].length === 0 ?
@@ -70,7 +70,7 @@ export function ProfileConnections({ publicId }: { publicId: string }) {
               {profile.bio && <span className="muted connection-bio">{profile.bio}</span>}</span>
           </Link>
         </li>)}</ul>}
-      <p className="muted">今月、あなたに表示できる人だけを数えています。</p>
+      <p className="muted">今週、あなたに表示できる人だけを数えています。</p>
     </dialog>
   </div>;
 }

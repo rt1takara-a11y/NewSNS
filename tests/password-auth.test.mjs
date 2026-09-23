@@ -20,7 +20,7 @@ function setup(overrides = {}) {
         '/rest/v1/rpc/reme_login_identity': alias,
         '/auth/v1/admin/users': {id:'private-account'},
         '/auth/v1/token': {access_token:'access',refresh_token:'refresh',user:{email:alias}},
-        '/rest/v1/rpc/reme_state': {me:{publicId:'monthly'}},
+        '/rest/v1/rpc/reme_state': {me:{publicId:'weekly'}},
       };
       assert.ok(path in defaults, `unexpected upstream request ${path}`);
       return new Response(JSON.stringify(response ? response.body : defaults[path]), {status:response?.status ?? 200});

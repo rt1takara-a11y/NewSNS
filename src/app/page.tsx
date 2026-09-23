@@ -24,7 +24,7 @@ export default function TimelinePage() {
       <header className="topbar">
         <div className="eyebrow">THE PRESENT</div>
         <h1>タイムライン<span className="header-mark">↗</span></h1>
-        <div className="period">{periodLabel(state.period)}の世界 ・ 月末にすべて消えます</div>
+        <div className="period">{periodLabel(state.period)}の世界 ・ 日曜の終わりに切り替わります</div>
       </header>
 
       <div className="content">
@@ -50,14 +50,14 @@ export default function TimelinePage() {
               <p>まだ誰もフォローしていません。</p>
               <p>
                 <Link className="btn ghost small" href="/discover">
-                  今月の人をさがす
+                  今週の人をさがす
                 </Link>
               </p>
             </div>
           ) : (
             <div className="empty">
               <div className="big">🌙</div>
-              <p>まだ投稿がありません。今月の最初の一言を。</p>
+              <p>まだ投稿がありません。今週の最初の一言を。</p>
             </div>
           )
         ) : (

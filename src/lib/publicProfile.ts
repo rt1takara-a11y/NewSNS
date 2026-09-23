@@ -1,7 +1,7 @@
 import type { AppState, Profile } from "./types";
 
 // Resolve only within the authorized current snapshot. Never search blocked
-// profiles or fall back to an account ID, email, or a previous month's data.
+// profiles or fall back to an account ID, email, or a previous week's data.
 export function findPublicProfile(state: AppState, publicId: string | null): Profile | undefined {
   if (!publicId || state.blocked?.some((p) => p.publicId === publicId)) return undefined;
   return publicId === state.me.publicId

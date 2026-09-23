@@ -12,7 +12,7 @@ type Store = {
  createPost: (body:string, id?:string)=>Promise<boolean>;
  toggleLike: (id:string)=>Promise<boolean>; addReply: (id:string, body:string, operationId?:string)=>Promise<boolean>;
  toggleFollow:(id:string)=>Promise<boolean>; updateMyProfile:(patch:Partial<Profile>)=>Promise<boolean>;
- monthlyReset:()=>void; discoverPeople:()=>Promise<void>;
+ periodReset:()=>void; discoverPeople:()=>Promise<void>;
  blockPerson:(id:string,enabled:boolean)=>Promise<boolean>; reportPost:(id:string,reason:string)=>Promise<boolean>;
  deletePost:(id:string)=>Promise<boolean>;
 };
@@ -90,7 +90,7 @@ export function StoreProvider({children}:{children:React.ReactNode}) {
   addReply:(id,body,operationId)=>mutate('reply',{postId:id,body,id:operationId??crypto.randomUUID()},s=>({...s,posts:s.posts.map(p=>p.id!==id?p:{...p,replies:[...p.replies,{id:newPublicId(),authorPublicId:s.me.publicId,body:body.trim(),createdAt:Date.now()}]})})),
   toggleFollow:id=>mutate('follow',{target:id,enabled:!state.following.includes(id)},s=>({...s,following:s.following.includes(id)?s.following.filter(x=>x!==id):[...s.following,id]})),
   updateMyProfile:patch=>mutate('profile',patch,s=>({...s,me:{...s.me,...patch}})),
-  monthlyReset:()=>{if(!live)setState(resetState());},
+  periodReset:()=>{if(!live)setState(resetState());},
   discoverPeople:async()=>{if(live)await refresh().catch(()=>{});else setState(s=>({...initialState(),me:s.me,following:s.following}));},
   blockPerson:(id,enabled)=>mutate(enabled?'block':'unblock',{target:id},s=>({...s,blocked:enabled?[...(s.blocked??[]),...s.people.filter(p=>p.publicId===id)]:(s.blocked??[]).filter(p=>p.publicId!==id),posts:enabled?s.posts.filter(p=>p.authorPublicId!==id):s.posts,people:enabled?s.people.filter(p=>p.publicId!==id):[...s.people,...(s.blocked??[]).filter(p=>p.publicId===id)],following:s.following.filter(x=>x!==id)})),
   reportPost:(id,reason)=>mutate('report',{postId:id,reason},s=>s),
@@ -98,7 +98,7 @@ export function StoreProvider({children}:{children:React.ReactNode}) {
  }),[state,live,busy,error,refresh,mutate]);
  // Auth screen intentionally excludes navigation, names and content until a DB-authorized snapshot arrives.
  if(status==='signedOut')return <LoginPanel/>;
- if(status==='loading')return <div className="auth-shell"><h1>RE:ME</h1><p role="status">今月の世界を開いています…</p></div>;
+ if(status==='loading')return <div className="auth-shell"><h1>RE:ME</h1><p role="status">今週の世界を開いています…</p></div>;
  if(status==='error')return <div className="auth-shell"><h1>RE:ME</h1><p role="alert">{error}</p><button className="btn" onClick={()=>void refresh().catch(()=>{})}>再読み込み</button><button className="btn ghost" onClick={()=>void supabase().auth.signOut()}>ログアウト</button></div>;
  return <Context.Provider value={store}>
   {!live&&<div className="demo-banner">体験版 · 入力は保存されません。参加受付は準備中です。</div>}

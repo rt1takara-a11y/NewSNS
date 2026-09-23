@@ -14,9 +14,9 @@ export function friendlyError(error: unknown): string {
   const message = error instanceof Error ? error.message : String((error as {message?: string})?.message || error);
   const known: Record<string,string> = {
     ACCOUNT_SUSPENDED: 'このアカウントは利用停止中です。運営へお問い合わせください。',
-    PERIOD_CHANGED: '新しい月になりました。今月の名前を設定して、もう一度お試しください。',
+    PERIOD_CHANGED: '新しい週になりました。今週の名前を設定して、もう一度お試しください。',
     AUTH_REQUIRED: 'ログインし直してください。',
-    PROFILE_REQUIRED: 'プロフィールで今月の名前を設定してください。',
+    PROFILE_REQUIRED: 'プロフィールで今週の名前を設定してください。',
     RATE_LIMITED: '操作が続いています。1分ほど待ってからお試しください。',
     NOT_FOUND: 'この投稿や相手は現在表示できません。更新してお試しください。',
     INVALID_INPUT: '入力内容と文字数を確認してください。',

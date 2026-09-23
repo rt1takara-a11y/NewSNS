@@ -30,8 +30,8 @@ function EmailLoginForm(){
 export function LoginPanel() {
  const enabled = process.env.NEXT_PUBLIC_LOGIN_ID_ENABLED === 'true';
  const [method, setMethod] = useState<'login' | 'register' | 'email'>(enabled ? 'login' : 'email');
- return <section className="auth-shell"><div className="eyebrow">A NEW MONTH. A NEW YOU.</div><h1>RE:ME</h1>
-  <p>毎月、あたらしい自分に。</p>
+ return <section className="auth-shell"><div className="eyebrow">A NEW WEEK. A NEW YOU.</div><h1>RE:ME</h1>
+  <p>毎週、あたらしい自分に。</p>
   {enabled && <div className="auth-methods" role="group" aria-label="ログイン方法">
    <button className="btn ghost small" aria-pressed={method === 'login'} onClick={() => setMethod('login')}>IDでログイン</button>
    <button className="btn ghost small" aria-pressed={method === 'register'} onClick={() => setMethod('register')}>新規登録</button>
@@ -39,6 +39,6 @@ export function LoginPanel() {
   </div>}
   {method === 'email' ? <EmailLoginForm /> : <PasswordLoginForm key={method} registering={method === 'register'} />}
   <details><summary>参加前にお読みください</summary><p className="muted">誹謗中傷、個人情報の無断公開、なりすまし、嫌がらせは禁止です。ログインID・メールアドレスは認証に使用し、他の利用者には公開しません。投稿・通報記録は運営の対応のために保持します。公開情報のリセットと運営記録の削除は別の処理です。</p></details>
-  <p className="handle">名前・投稿・つながりは毎月リセットされます。ログイン情報は継続します。</p>
+  <p className="handle">名前・投稿・つながりは毎週リセットされます。ログイン情報は継続します。</p>
  </section>;
 }

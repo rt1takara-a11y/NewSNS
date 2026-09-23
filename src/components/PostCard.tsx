@@ -31,7 +31,7 @@ export function PostCard({ post }: { post: Post }) {
         <ProfileLink profile={author} icon />
         <div>
           <ProfileLink profile={author} />
-          <div className="handle">今月のつながり</div>
+          <div className="handle">今週のつながり</div>
         </div>
         <div className="time">{timeAgo(post.createdAt)}</div>
       </div>
@@ -79,7 +79,7 @@ export function PostCard({ post }: { post: Post }) {
             className="grow"
             aria-label="返信内容"
             rows={2}
-            placeholder="今月のこの人に返信…"
+            placeholder="今週のこの人に返信…"
             value={replyText}
             maxLength={500}
             disabled={busy}
@@ -93,7 +93,7 @@ export function PostCard({ post }: { post: Post }) {
       <details className="post-options"><summary>投稿の操作</summary><div className="row">
         {post.authorPublicId === state.me.publicId
           ? <button className="action" disabled={busy} onClick={() => {if(window.confirm("この投稿を非表示にしますか？")) void deletePost(post.id);}}>自分の投稿を非表示</button>
-          : <><button className="action" onClick={() => setReporting(v => !v)}>通報する</button><button className="action" disabled={busy} onClick={() => {if(window.confirm("この人を今月ブロックしますか？互いの投稿が表示されなくなります。")) void blockPerson(post.authorPublicId, true);}}>ブロック</button></>}
+          : <><button className="action" onClick={() => setReporting(v => !v)}>通報する</button><button className="action" disabled={busy} onClick={() => {if(window.confirm("この人を今週ブロックしますか？互いの投稿が表示されなくなります。")) void blockPerson(post.authorPublicId, true);}}>ブロック</button></>}
       </div></details>
       {reporting && <form className="report-form" onSubmit={async e => {e.preventDefault();if(await reportPost(post.id, reason)){setReported(true);setReporting(false);setReason("");}}}><label>通報の理由<textarea required maxLength={500} value={reason} onChange={e => setReason(e.target.value)} /></label><button className="btn small" disabled={busy || !reason.trim()}>通報を送信</button></form>}
       {reported && <p role="status" className="muted">通報を受け付けました。</p>}

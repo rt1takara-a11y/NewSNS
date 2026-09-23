@@ -26,7 +26,7 @@ export function PostComposer() {
           rows={3}
           placeholder={
             noName
-              ? "その前に、プロフィールで今月の名前を決めよう"
+              ? "その前に、プロフィールで今週の名前を決めよう"
               : "いま、何を感じてる？"
           }
           value={text}
@@ -37,7 +37,7 @@ export function PostComposer() {
       </div>
       <div className="row" style={{ justifyContent: "flex-end", marginTop: 8 }}>
         <span className="muted" style={{ fontSize: 13, marginRight: "auto" }}>
-          月末にすべて消えます
+          週末にすべて切り替わります
         </span>
         <button className="btn" onClick={onPost} disabled={busy || noName || !text.trim()}>
           投稿する <Icon name="arrow" />
@@ -46,4 +46,3 @@ export function PostComposer() {
     </div>
   );
 }
-

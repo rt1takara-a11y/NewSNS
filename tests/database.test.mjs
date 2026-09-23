@@ -26,7 +26,7 @@ const uuid=()=>crypto.randomUUID();
 let a,b,postId;
 after(async()=>{await db.close();await rm(directory,{recursive:true,force:true});});
 test('anonymous caller cannot read state',async()=>{await assert.rejects(()=>state(null),/permission denied/);});
-test('accounts and monthly IDs are separated, no internal IDs in snapshot',async()=>{
+test('accounts and weekly IDs are separated, no internal IDs in snapshot',async()=>{
  a=await state(A);b=await state(B);assert.notEqual(a.me.publicId,A);assert.notEqual(a.me.publicId,b.me.publicId);
  assert.equal(JSON.stringify(a).includes(A),false);assert.equal(JSON.stringify(a).includes('account_id'),false);
  assert.equal(a.epoch,b.epoch);
@@ -105,10 +105,14 @@ test('expired content purge preserves held evidence and active profiles',async()
  assert.equal((await db.query('select count(*)::int as n from reme_private.profiles where epoch<>reme_private.epoch()')).rows[0].n,0);
  assert.equal((await state(A)).me.publicId,a.me.publicId);
 });
-test('JST month boundary is based on server time expression',async()=>{
- const r=await db.query(`select to_char($1::timestamptz at time zone 'Asia/Tokyo','YYYY-MM') as month`,['2026-09-30T15:00:00Z']);
- assert.equal(r.rows[0].month,'2026-10');
- const before=await db.query(`select to_char($1::timestamptz at time zone 'Asia/Tokyo','YYYY-MM') as month`,['2026-09-30T14:59:59Z']);assert.equal(before.rows[0].month,'2026-09');
+test('JST weekly boundary is Monday 00:00 and next reset is the following Monday',async()=>{
+ const r=await db.query(`select
+  to_char($1::timestamptz at time zone 'Asia/Tokyo','IYYY-"W"IW') as before_week,
+  to_char($2::timestamptz at time zone 'Asia/Tokyo','IYYY-"W"IW') as after_week,
+  extract(epoch from (((date_trunc('week',$2::timestamptz at time zone 'Asia/Tokyo')+interval '1 week') at time zone 'Asia/Tokyo')-$2::timestamptz))::int as seconds_to_reset`,
+  ['2026-09-20T14:59:59Z','2026-09-20T15:00:00Z']);
+ assert.equal(r.rows[0].before_week,'2026-W38');assert.equal(r.rows[0].after_week,'2026-W39');
+ assert.equal(r.rows[0].seconds_to_reset,7*24*60*60);
 });
 
 test('data remains after closing and reopening the database',async()=>{

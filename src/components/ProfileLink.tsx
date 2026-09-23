@@ -8,5 +8,5 @@ export function ProfileLink({ profile, icon = false }: { profile: Profile | unde
   const className = icon ? "avatar profile-link" : "name profile-link";
   if (!profile) return <span className={className}>{content}</span>;
   return <Link href={publicProfileHref(profile)} className={className}
-    aria-label={`${name}の今月のプロフィールを開く`}>{content}</Link>;
+    aria-label={`${name}の今週のプロフィールを開く`}>{content}</Link>;
 }

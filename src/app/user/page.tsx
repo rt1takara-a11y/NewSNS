@@ -10,7 +10,7 @@ import { PostCard } from "@/components/PostCard";
 import { ProfileConnections } from "@/components/ProfileConnections";
 
 function LoadingProfile() {
-  return <div className="content" role="status">今月のプロフィールを確認しています…</div>;
+  return <div className="content" role="status">今週のプロフィールを確認しています…</div>;
 }
 
 function PublicProfile() {
@@ -40,18 +40,18 @@ function PublicProfile() {
 
   return <>
     <header className="topbar">
-      <div className="eyebrow">THIS MONTH'S PROFILE</div>
-      <h1>今月のプロフィール</h1>
+      <div className="eyebrow">THIS WEEK&apos;S PROFILE</div>
+      <h1>今週のプロフィール</h1>
       <div className="period">{periodLabel(state.period)}だけのつながり</div>
     </header>
     <div className="content">
-      <Link className="action" href="/discover/">今月の出会いへ</Link>
+      <Link className="action" href="/discover/">今週の出会いへ</Link>
       {failed || (live && error) ? <div className="empty">
         <p role="alert">プロフィールを確認できませんでした。</p>
         <button className="btn" disabled={busy} onClick={() => setAttempt((v) => v + 1)}>再読み込み</button>
       </div> : loading ? <LoadingProfile /> : !profile ? <div className="empty">
         <p>このプロフィールは現在表示できません。</p>
-        <p>今月の出会いから、参加している人を見つけてください。</p>
+        <p>今週の出会いから、参加している人を見つけてください。</p>
       </div> : <>
         <section className="card center profile-cover" aria-labelledby="public-profile-name">
           <div className="avatar lg profile-avatar" aria-hidden="true">{profile.icon}</div>
@@ -64,7 +64,7 @@ function PublicProfile() {
               {following ? "フォロー解除" : "フォロー"}
             </button>}
         </section>
-        <h2 className="profile-posts-heading">今月の投稿</h2>
+        <h2 className="profile-posts-heading">今週の投稿</h2>
         {posts.length ? posts.map((post) => <PostCard key={post.id} post={post} />) :
           <div className="empty"><p>現在表示できる投稿はありません。</p></div>}
         {live && <p className="muted profile-posts-note">全体の最新100件から、この人の投稿を表示しています。</p>}
@@ -73,7 +73,7 @@ function PublicProfile() {
   </>;
 }
 
-// A static route with a query parameter supports new monthly IDs without
+// A static route with a query parameter supports new weekly IDs without
 // generating profile pages at build time or changing the existing Sites host.
 export default function UserPage() {
   return <Suspense fallback={<LoadingProfile />}><PublicProfile /></Suspense>;

@@ -13,6 +13,15 @@
 
 ---
 
+## 2026-09-23 — Codex / リセット期間を月次から週次へ変更
+
+- 所有者の指定により、公開情報の切替を毎週月曜0:00（JST）へ変更。期間IDはJSTのISO週（例 `2026-W39`）、次回切替はDB時計から算出する。内部アカウント、認証との対応、利用停止、通報記録は継続する。
+- CLIで `20260922155931_weekly_period.sql` を生成し、`reme_private.epoch()` と `public.reme_state()` を差し替え。旧epochの書き込み拒否、private helperのブラウザ権限剥奪、既存RLSを維持。
+- RE:ME実環境へ `weekly_period` migrationを適用。適用前のアカウント3件・月次プロフィール3件は削除せず、旧プロフィールを公開対象外にした。実環境は `2026-W39:0`、次回切替は2026-09-28 0:00 JST、anon/authenticatedから期間helper実行不可、認証済み`reme_state`実行可を確認。
+- 画面・メタデータ・説明文・モック・設計資料を週次表現へ更新。月曜境界とISO週年境界のテストを追加し、46件のテスト、Deno lint/check、Next本番ビルドに成功。
+- Security advisorに新規の週次変更由来の問題なし。privateテーブルのポリシーなしと既存3業務RPCのsecurity definerは意図した限定API。漏洩パスワード保護の警告と既存の性能INFOは継続。
+- 次: 本人限定のSitesへ週次UIを反映し、公開URLとアクセス範囲を確認する。
+
 ## 2026-09-23 — Codex / ID・パスワード認証を実環境へ反映
 
 - RE:MEのSupabaseプロジェクトに `login_id_password` migrationを適用し、`reme-password-auth` Edge Function version 1を配置。既存のメールOTP設定は変更していない。

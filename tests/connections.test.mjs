@@ -6,8 +6,8 @@ import ts from 'typescript';
 const source = await readFile(new URL('../src/lib/connections.ts', import.meta.url), 'utf8');
 const compiled = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.ESNext } }).outputText;
 const { currentConnections, demoConnections } = await import('data:text/javascript;base64,' + Buffer.from(compiled).toString('base64'));
-const me = { publicId: 'monthly-me', displayName: '自分', bio: '', icon: '🙂' };
-const other = { publicId: 'monthly-other', displayName: '相手', bio: '', icon: '🌱' };
+const me = { publicId: 'weekly-me', displayName: '自分', bio: '', icon: '🙂' };
+const other = { publicId: 'weekly-other', displayName: '相手', bio: '', icon: '🌱' };
 const state = { me, people: [other], following: [other.publicId], posts: [], epoch: '2026-09:0', period: '2026-09' };
 
 test('demo follow and unfollow are reflected in both profile directions', () => {
@@ -16,9 +16,9 @@ test('demo follow and unfollow are reflected in both profile directions', () => 
   assert.deepEqual(demoConnections({ ...state, following: [] }, other.publicId).followers, []);
   assert.deepEqual(demoConnections({ ...state, blocked: [other] }, me.publicId).following, []);
   assert.deepEqual(demoConnections({ ...state, blocked: [other] }, other.publicId).followers, []);
-  assert.deepEqual(demoConnections(state, 'previous-month').followers, []);
+  assert.deepEqual(demoConnections(state, 'previous-week').followers, []);
 });
-test('late responses cannot reappear after state, identity, target or month changes', () => {
+test('late responses cannot reappear after state, identity, target or week changes', () => {
   const data = demoConnections(state, me.publicId);
   const result = { snapshot: state, data };
   assert.equal(currentConnections(state, me.publicId, result), data);
